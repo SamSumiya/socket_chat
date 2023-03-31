@@ -53,11 +53,6 @@ export const SetAvatar = () => {
     setIsLoading(true)
     const dataArray = []
     for (let i = 0; i < 3; i++) {
-      // console.log(
-      //   `${api}/${Math.round(Math.random() * 1000)}?apikey=${
-      //     process.env.REACT_APP_MULTIAVATAR_KEY
-      //   }`,
-      // )
       const image = await axios.get(
         `${api}/${Math.round(Math.random() * 1000)}?apikey=${process.env.REACT_APP_MULTIAVATAR_KEY}`,
       )

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import Logo from '../assets/logo (1).svg'
-import { allContactsRoute } from '../utiles/APIRoutes'
 
 export const Contacts = ({ contacts, currentUser, handleChatChange }) => {
   const [currentUserName, setCurrentUserName] = useState(undefined)
@@ -41,7 +40,7 @@ export const Contacts = ({ contacts, currentUser, handleChatChange }) => {
                   {
                     <img
                       src={`data:image/svg+xml;base64,${contact.avatarImage}`}
-                      alt=""
+                      alt="avatar"
                     />
                   }
                 </div>

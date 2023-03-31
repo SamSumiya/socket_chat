@@ -12,6 +12,8 @@ export const ChatContainer = ({ currentChat, socket }) => {
   const scrollRef = useRef()
 
   const currentUser = JSON.parse(localStorage.getItem(process.env.REACT_APP_LOCALHOSTKEY))
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const getMessages = async () => {
     if (currentChat) {
       const { data } = await axios.post(`${messageRoute}/get`, {
@@ -21,13 +23,10 @@ export const ChatContainer = ({ currentChat, socket }) => {
       setMessages(data)
     }
   }
-  console.log(messages[0], 'are these messages god o?')
+
   useEffect(() => {
-    if (currentChat) {
-      getMessages()
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    getMessages()
+  }, [getMessages, messages])
 
   const handleSendMessage = async (message) => {
     const { data } = await axios.post(`${messageRoute}/add`, {
@@ -86,7 +85,7 @@ export const ChatContainer = ({ currentChat, socket }) => {
             <div
               className={`message ${message.fromSelf ? 'sender' : 'recieved'}`}
             >
-              {console.log(message)}
+
               <div className="content">
                 <p>{message.message}</p>
               </div>
