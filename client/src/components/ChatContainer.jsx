@@ -11,22 +11,25 @@ export const ChatContainer = ({ currentChat, socket }) => {
   const [recievedMessage, setRecievedMessage] = useState(null)
   const scrollRef = useRef()
 
-  const currentUser = JSON.parse(localStorage.getItem(process.env.REACT_APP_LOCALHOSTKEY))
-
+  const currentUser = JSON.parse(
+    localStorage.getItem(process.env.REACT_APP_LOCALHOSTKEY),
+  )
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const getMessages = async () => {
+    // console.log(messages, "messages1")
     if (currentChat) {
       const { data } = await axios.post(`${messageRoute}/get`, {
         from: currentUser._id,
         to: currentChat._id,
       })
+
       setMessages(data)
     }
   }
 
   useEffect(() => {
     getMessages()
-  }, [getMessages, messages])
+  }, [currentChat, getMessages])
 
   const handleSendMessage = async (message) => {
     const { data } = await axios.post(`${messageRoute}/add`, {
@@ -39,22 +42,27 @@ export const ChatContainer = ({ currentChat, socket }) => {
       from: currentUser._id,
       message,
     })
-  
+
     const msgs = [...messages]
-    msgs.push({ fromSelf: true, message: message })
+    msgs.push({ fromSelf: true, message: message, targetUser: currentChat._id })
+
     setMessages(msgs)
   }
 
   useEffect(() => {
     if (socket.current) {
-      socket.current.on('message-recieved', (message) => {
-        setRecievedMessage({ fromSelf: false, message })
+      socket.current.on('message-recieved', (message, to, from) => {
+
+        if (to === currentUser._id ) {
+          setRecievedMessage({ fromSelf: false, message })
+        }
       })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
+    // console.log( recievedMessage );
     recievedMessage && setMessages((prev) => [...prev, recievedMessage])
   }, [recievedMessage])
 
@@ -80,12 +88,11 @@ export const ChatContainer = ({ currentChat, socket }) => {
       </div>
       {/* <div className="chat-messages"></div> */}
       <div className="chat-messages">
-        {messages?.map((message, idx) => (
+        {messages?.map((message) => (
           <div key={uuid4()} ref={scrollRef}>
             <div
               className={`message ${message.fromSelf ? 'sender' : 'recieved'}`}
             >
-
               <div className="content">
                 <p>{message.message}</p>
               </div>

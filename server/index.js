@@ -73,8 +73,10 @@ io.on('connection', (socket) => {
 
   socket.on('send-message', (data) => {
     const sendUserSocket = onlineUsers.get(data.to)
+
     if (sendUserSocket) {
-      socket.to(sendUserSocket).emit('message-recieved', data.message)
+      console.log(data.to, data.from)
+      socket.to(sendUserSocket).emit('message-recieved', data.message, data.to, data.from )
     }
   })
 })

@@ -15,6 +15,7 @@ export const Chat = () => {
   const [currentChat, setCurrentChat] = useState(undefined)
   const navigate = useNavigate()
 
+  
   useEffect(() => {
     if (!localStorage.getItem(process.env.REACT_APP_LOCALHOSTKEY)) {
       navigate('/login')
@@ -25,9 +26,10 @@ export const Chat = () => {
   }, [])
 
   useEffect(() => {
+    console.log(currentUser);
     if (currentUser) {
       socket.current = io(host)
-      socket.current.emit('add-user', currentUser._id)
+      socket.current.emit('add-user', currentChat?._id)
     }
   }, [currentUser])
 
