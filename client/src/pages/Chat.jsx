@@ -26,7 +26,6 @@ export const Chat = () => {
   }, [])
 
   useEffect(() => {
-    console.log(currentUser);
     if (currentUser) {
       socket.current = io(host)
       socket.current.emit('add-user', currentChat?._id)

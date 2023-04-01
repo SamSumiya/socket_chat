@@ -16,13 +16,11 @@ export const ChatContainer = ({ currentChat, socket }) => {
   )
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const getMessages = async () => {
-    // console.log(messages, "messages1")
     if (currentChat) {
       const { data } = await axios.post(`${messageRoute}/get`, {
         from: currentUser._id,
         to: currentChat._id,
       })
-
       setMessages(data)
     }
   }
@@ -52,8 +50,7 @@ export const ChatContainer = ({ currentChat, socket }) => {
   useEffect(() => {
     if (socket.current) {
       socket.current.on('message-recieved', (message, to, from) => {
-
-        if (to === currentUser._id ) {
+        if (to === currentUser._id) {
           setRecievedMessage({ fromSelf: false, message })
         }
       })
@@ -62,7 +59,6 @@ export const ChatContainer = ({ currentChat, socket }) => {
   }, [])
 
   useEffect(() => {
-    // console.log( recievedMessage );
     recievedMessage && setMessages((prev) => [...prev, recievedMessage])
   }, [recievedMessage])
 
